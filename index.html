@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>LifeCharter Command Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ivory:#F6F1E8;
+    --indigo:#1F315B;
+    --indigo-soft:#2a3f6b;
+    --plum:#5E3B6C;
+    --plum-soft:#7a4f8a;
+    --teal:#2E7C83;
+    --teal-soft:#3d8f96;
+    --gold:#D4AF63;
+    --gold-soft:#e0c07a;
+    --lavender:#CDBED6;
+    --taupe:#B9A9A9;
+    --ink:#1a1f2e;
+    --muted:#6b6b7a;
+    --line:#e3ddd0;
+    --card:#fffdf8;
+    --good:#3f7d5a;
+    --warn:#b8862b;
+    --pending:#9a9384;
+    --display:'Cormorant Garamond',Georgia,serif;
+    --body:'Open Sans',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--ivory);color:var(--ink);font-family:var(--body);line-height:1.5;-webkit-font-smoothing:antialiased;padding:0 0 80px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  header{background:var(--indigo);color:var(--ivory);padding:40px 0 34px;border-bottom:4px solid var(--gold);position:relative;overflow:hidden}
+  header::after{content:"";position:absolute;right:-80px;top:-80px;width:320px;height:320px;background:radial-gradient(circle,rgba(212,175,99,.22),transparent 70%)}
+  .eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-soft);font-weight:600;margin-bottom:10px}
+  header h1{font-family:var(--display);font-weight:600;font-size:38px;line-height:1.05;letter-spacing:-.01em;max-width:680px}
+  header p.sub{color:#d4d0c8;margin-top:12px;max-width:620px;font-size:15px}
+  .statusbar{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;position:relative;z-index:2}
+  .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);color:#e8e5dc;font-size:12.5px;font-weight:500;padding:7px 13px;border-radius:999px}
+  .chip b{font-weight:700;color:#fff}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--gold-soft)}
+  .dot.live{background:#6fd49a}
+  nav{position:sticky;top:0;z-index:20;background:var(--ivory);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:4px;overflow-x:auto}
+  .tab{appearance:none;border:none;background:none;font-family:var(--body);font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;padding:16px 16px 13px;border-bottom:3px solid transparent;white-space:nowrap;transition:color .15s}
+  .tab:hover{color:var(--indigo)}
+  .tab.active{color:var(--indigo);border-bottom-color:var(--gold)}
+  .tab span.n{font-family:var(--display);font-weight:600;color:var(--gold);margin-right:7px}
+  main{padding-top:34px}
+  .panel{display:none;animation:fade .35s ease}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+  .sec-head h2{font-family:var(--display);font-weight:600;font-size:27px;color:var(--indigo);letter-spacing:-.01em}
+  .sec-head .meta{font-size:12.5px;color:var(--muted)}
+  .lead{color:var(--muted);font-size:14.5px;max-width:680px;margin:8px 0 26px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+  .metric{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 20px 18px}
+  .metric .cat{font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:var(--gold);margin-bottom:9px}
+  .metric h3{font-family:var(--display);font-weight:500;font-size:17px;color:var(--indigo);line-height:1.2;margin-bottom:14px}
+  .metric .nums{display:flex;align-items:flex-end;gap:18px;margin-bottom:12px}
+  .metric .now{font-family:var(--display);font-weight:600;font-size:30px;color:var(--ink);line-height:1}
+  .metric .now.pending{color:var(--pending);font-size:22px;font-style:italic}
+  .metric .tgt{font-size:12.5px;color:var(--muted);padding-bottom:4px}
+  .metric .tgt b{color:var(--indigo);font-weight:700}
+  .metric .foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:11px;margin-top:4px}
+  .src{font-size:11px;color:var(--pending);font-weight:600;letter-spacing:.03em}
+  .bar{height:6px;background:#efe9dc;border-radius:99px;overflow:hidden;margin:2px 0 12px}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-soft));border-radius:99px}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;letter-spacing:.02em}
+  .pill::before{content:"";width:6px;height:6px;border-radius:50%}
+  .p-live{background:#e6f1ea;color:var(--good)} .p-live::before{background:var(--good)}
+  .p-built{background:#eef0ef;color:var(--indigo)} .p-built::before{background:var(--indigo-soft)}
+  .p-prog{background:#fbf0e6;color:var(--gold)} .p-prog::before{background:var(--gold)}
+  .p-pend{background:#f1efe8;color:var(--pending)} .p-pend::before{background:var(--pending)}
+  .p-int{background:#ecefee;color:var(--teal)} .p-int::before{background:var(--teal-soft)}
+  .group{margin-bottom:30px}
+  .group > h3{font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);margin-bottom:13px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  table.assets{width:100%;border-collapse:collapse}
+  table.assets td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14px}
+  table.assets td.name{font-weight:600;color:var(--ink);width:34%}
+  table.assets td.name small{display:block;font-weight:400;color:var(--muted);font-size:12.5px;margin-top:2px}
+  table.assets td.note{color:var(--muted);font-size:13px}
+  table.assets tr:last-child td{border-bottom:none}
+  .actions{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .actions th{background:#f4efe4;text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--indigo);font-weight:700;padding:13px 14px}
+  .actions td{padding:13px 14px;border-top:1px solid var(--line);font-size:13.5px;vertical-align:top}
+  .actions td.made{color:var(--muted)}
+  .actions td.ship b{color:var(--good)}
+  .actions td.ship .no{color:var(--gold);font-weight:700}
+  .teeth{background:#fbf0e6;border-left:3px solid var(--gold);padding:14px 18px;border-radius:0 10px 10px 0;font-size:13.5px;color:#7a5a2c;margin:18px 0 22px;max-width:760px}
+  .teeth b{color:var(--gold)}
+  .countline{display:flex;gap:24px;flex-wrap:wrap;margin:0 0 20px}
+  .countline .c{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 20px;min-width:130px}
+  .countline .c .lab{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:6px}
+  .countline .c .v{font-family:var(--display);font-weight:600;font-size:30px;color:var(--indigo);line-height:1}
+  .countline .c.leak .v{color:var(--gold)}
+  ol.gap{list-style:none;counter-reset:g}
+  ol.gap li{counter-increment:g;position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px 16px 58px;margin-bottom:12px}
+  ol.gap li::before{content:counter(g);position:absolute;left:16px;top:16px;width:28px;height:28px;border-radius:50%;background:var(--indigo);color:var(--ivory);font-family:var(--display);font-weight:600;display:flex;align-items:center;justify-content:center;font-size:14px}
+  ol.gap li h4{font-family:var(--display);font-weight:600;font-size:16px;color:var(--indigo);margin-bottom:4px}
+  ol.gap li p{font-size:13.5px;color:var(--muted)}
+  ol.gap li .rev{display:inline-block;margin-top:8px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--gold)}
+  footer{margin-top:50px;padding-top:20px;border-top:1px solid var(--line);font-size:12px;color:var(--pending);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Sacred Kaleidoscope Community · Command Centre</div>
+    <h1>LifeCharter Accountability Dashboard</h1>
+    <p class="sub">What we set out to do, what we actually shipped, and the gap to a thriving alignment business.</p>
+    <div class="statusbar" id="statusbar"></div>
+  </div>
+</header>
+<nav><div class="wrap">
+  <button class="tab active" data-p="outcomes"><span class="n">01</span>Outcomes</button>
+  <button class="tab" data-p="actions"><span class="n">02</span>Actions Taken</button>
+  <button class="tab" data-p="metrics"><span class="n">03</span>Results vs Metrics</button>
+  <button class="tab" data-p="projects"><span class="n">04</span>Project Reports</button>
+  <button class="tab" data-p="gap"><span class="n">05</span>Gap to Thriving Business</button>
+</div></nav>
+<main class="wrap">
+  <section class="panel active" id="outcomes">
+    <div class="sec-head"><h2>Outcomes</h2><span class="meta">Results — not activity</span></div>
+    <p class="lead">Each outcome is a change in the business state, with evidence and the metric it moved.</p>
+    <table class="actions"><thead><tr><th style="width:34%">Outcome</th><th>Evidence</th><th>Metric moved</th><th>Qtr</th></tr></thead><tbody id="outcomes-body"></tbody></table>
+  </section>
+  <section class="panel" id="actions">
+    <div class="sec-head"><h2>Actions Taken</h2><span class="meta">Made vs Shipped</span></div>
+    <div class="teeth"><b>The teeth:</b> shipped means it left the building. A finished thing in drafts is made, not shipped. The headline is "<b>made X, shipped Y</b>."</div>
+    <div class="countline" id="countline"></div>
+    <table class="actions"><thead><tr><th style="width:40%">Item</th><th>Made</th><th>Shipped</th><th>Status</th></tr></thead><tbody id="actions-body"></tbody></table>
+  </section>
+  <section class="panel" id="metrics">
+    <div class="sec-head"><h2>Results vs Tracked Metrics</h2><span class="meta">Target · current · source</span></div>
+    <p class="lead">The goals we hold ourselves to. Current values from live sources; flagged targets need confirming.</p>
+    <div class="grid" id="metrics-grid"></div>
+  </section>
+  <section class="panel" id="projects">
+    <div class="sec-head"><h2>Project Reports</h2><span class="meta">Every asset, honest status</span></div>
+    <div id="projects-body"></div>
+  </section>
+  <section class="panel" id="gap">
+    <div class="sec-head"><h2>Gap to a Thriving Business</h2><span class="meta">Sequenced · mission-first</span></div>
+    <p class="lead">What's genuinely left for a self-sustaining, mission-aligned business that transforms lives.</p>
+    <ol class="gap" id="gap-body"></ol>
+  </section>
+</main>
+<footer class="wrap"><span id="foot-left">LifeCharter Command Dashboard</span><span>Sacred Kaleidoscope · Alignment Architecture</span></footer>
+
+<script>
+/* ============================================================
+   POPULATE THIS OBJECT WITH YOUR AUDIT FINDINGS.
+   Sacred Kaleidoscope Community — LifeCharter Ecosystem
+   ============================================================ */
+const DASHBOARD_DATA = {
+  "meta": {
+    "quarter": "Q2 2026",
+    "generated": "2026-05-31",
+    "revenue_mode": true,
+    "retreat_note": "LifeCharter Circle launches Q3",
+    "data_state": "Quarterly audit — live: Global Control, PostStream, Vercel"
+  },
+  "outcomes": [
+    {"outcome": "LifeCharter Alignment Snapshot fully operational", "evidence": "LIVE at lifecharter-alignment-snapshot.vercel.app — 36-question assessment, AI report generation, email delivery, CRM integration", "metric_moved": "Lead capture active; conversion tracking in progress", "quarter": "Q2 2026"},
+    {"outcome": "Life by Design Summit workflow built", "evidence": "24 email templates, 5 workflows, 12 tags created in Global Control — pending activation", "metric_moved": "Automation infrastructure ready", "quarter": "Q2 2026"},
+    {"outcome": "AI Fleet operational with specialized agents", "evidence": "11 agents active: Mariposa, Curiosity Catalyst, Email Ember, Funnel Architect, Story Steward, Babs Voicekeeper, Stagecraft Sage, Clarity Compass, Consequence Curator, KeeJay, Sumbal", "metric_moved": "Content production capacity increased", "quarter": "Q2 2026"},
+    {"outcome": "PostStream social scheduling system deployed", "evidence": "ImageKit integration, automated posting to Instagram and LinkedIn, cron scheduling active", "metric_moved": "Consistent social presence established", "quarter": "Q2 2026"},
+    {"outcome": "LifeCharter brand system evolved", "evidence": "New brand board with Deep Indigo, Royal Plum, Sacred Teal, Warm Gold palette; typography system with Cormorant Garamond and Open Sans", "metric_moved": "Visual identity elevated", "quarter": "Q2 2026"}
+  ],
+  "actions": [
+    {"item": "LifeCharter Alignment Snapshot (assessment + AI report + CRM)", "made": "May 2026", "shipped": "Live — lifecharter-alignment-snapshot.vercel.app", "status": "shipped"},
+    {"item": "Life by Design Summit email workflows (24 templates, 5 flows)", "made": "May 2026", "shipped": "Built — pending Chad's team activation", "status": "inprogress"},
+    {"item": "AI Fleet deployment (11 specialized agents)", "made": "Apr–May 2026", "shipped": "Live — all agents operational", "status": "shipped"},
+    {"item": "PostStream social automation", "made": "May 2026", "shipped": "Live — Instagram + LinkedIn", "status": "shipped"},
+    {"item": "LifeCharter brand board v2", "made": "May 2026", "shipped": "Live — applied to all assets", "status": "shipped"},
+    {"item": "Conversations of Consequence DAILY content system", "made": "Ongoing", "shipped": "Live — daily episodes", "status": "shipped"},
+    {"item": "Weekly article publishing system", "made": "Ongoing", "shipped": "Live — weekly cadence", "status": "shipped"},
+    {"item": "Global Control CRM integration", "made": "May 2026", "shipped": "Live — contacts, tags, workflows", "status": "shipped"},
+    {"item": "LifeCharter Circle program design", "made": "May 2026", "shipped": "", "status": "inprogress"},
+    {"item": "LifeCharter Incubator funnel optimization", "made": "May 2026", "shipped": "", "status": "inprogress"},
+    {"item": "Email nurture sequences (LifeCharter pathway)", "made": "Spec complete", "shipped": "", "status": "inprogress"},
+    {"item": "Content repurposing SOP", "made": "Drafted", "shipped": "", "status": "made"},
+    {"item": "Sales process documentation", "made": "In development", "shipped": "", "status": "inprogress"},
+    {"item": "Team delegation system (Aira workflows)", "made": "Partial", "shipped": "", "status": "inprogress"}
+  ],
+  "metrics": [
+    {"category": "North Star", "name": "LifeCharter Circle members", "current": "0", "target": "20 founding members", "source": "Manual tracking", "progress": 0, "state": "confirm"},
+    {"category": "Revenue", "name": "Monthly recurring revenue", "current": "$0", "target": "$5,000 MRR by Q4", "source": "Stripe + Global Control", "progress": 0, "state": "needs-target"},
+    {"category": "Audience", "name": "Email list size", "current": "~500", "target": "2,500 by year end", "source": "Global Control", "progress": 20, "state": "on-track"},
+    {"category": "Engagement", "name": "LifeCharter Incubator registrations", "current": "TBD", "target": "10/month", "source": "Global Control forms", "progress": 0, "state": "confirm"},
+    {"category": "Content", "name": "Conversations of Consequence episodes", "current": "150+", "target": "Daily (365/year)", "source": "Content archive", "progress": 41, "state": "on-track"},
+    {"category": "Social", "name": "Instagram + LinkedIn followers", "current": "Growing", "target": "Not set", "source": "PostStream analytics", "progress": 0, "state": "needs-target"},
+    {"category": "Systems", "name": "Active automations", "current": "5 workflows", "target": "15 workflows", "source": "Global Control", "progress": 33, "state": "on-track"}
+  ],
+  "projects": [
+    {"group": "Public-facing sites", "items": [
+      {"name": "lifecharter-alignment-snapshot.vercel.app", "sub": "LifeCharter assessment + AI report", "status": "live", "note": "Fully operational — 36 questions, GPT-4o reports, email delivery, CRM sync"},
+      {"name": "amilynnecarroll.com", "sub": "Main presence + LifeCharter hub", "status": "live", "note": "Core website — needs brand refresh"},
+      {"name": "Sacred Kaleidoscope Community pages", "sub": "Community and content hub", "status": "live", "note": "Active — daily content, weekly articles"}
+    ]},
+    {"group": "Funnels & products", "items": [
+      {"name": "LifeCharter Alignment Snapshot", "sub": "Free assessment → email list → nurture", "status": "live", "note": "Primary lead magnet — operational"},
+      {"name": "LifeCharter Incubator", "sub": "Free 90-minute workshop", "status": "live", "note": "Entry point to Circle — needs optimization"},
+      {"name": "LifeCharter Circle", "sub": "Paid coaching container", "status": "inprogress", "note": "Program designed — launching Q3"},
+      {"name": "Life by Design Summit", "sub": "21-day challenge + summit", "status": "built", "note": "Workflows ready — pending activation"},
+      {"name": "Conversations of Consequence book", "sub": "Published content compilation", "status": "pending", "note": "Content ready — compilation in planning"}
+    ]},
+    {"group": "Internal systems", "items": [
+      {"name": "AI Fleet (11 agents)", "sub": "Specialized support agents", "status": "internal", "note": "All operational with defined roles"},
+      {"name": "Global Control CRM", "sub": "Contacts, tags, workflows", "status": "internal", "note": "Core business infrastructure"},
+      {"name": "PostStream social scheduler", "sub": "Instagram + LinkedIn automation", "status": "internal", "note": "Cron-based scheduling active"},
+      {"name": "ImageKit media library", "sub": "Brand assets + social graphics", "status": "internal", "note": "All May graphics uploaded"},
+      {"name": "Content calendar system", "sub": "Editorial planning + tracking", "status": "internal", "note": "Active — daily + weekly cadence"}
+    ]},
+    {"group": "Content engines", "items": [
+      {"name": "Conversations of Consequence DAILY", "sub": "5-7 min audio/video teachings", "status": "live", "note": "Daily production — 150+ episodes"},
+      {"name": "Weekly articles", "sub": "Long-form written content", "status": "live", "note": "Weekly cadence — Alignment Anchor integration"},
+      {"name": "Social media content", "sub": "Instagram + LinkedIn posts", "status": "live", "note": "Daily posts scheduled via PostStream"},
+      {"name": "Email newsletter", "sub": "Weekly teachings + invitations", "status": "live", "note": "Regular cadence established"}
+    ]}
+  ],
+  "gap": [
+    {"item": "Launch LifeCharter Circle to founding members", "detail": "Program is designed. Next: create invitation sequence, set pricing, open enrollment. This is the revenue foundation.", "revenue": true},
+    {"item": "Activate Life by Design Summit workflows", "detail": "24 emails and 5 workflows built. Need Chad's team to add content to flows and activate. Ready to generate leads.", "revenue": true},
+    {"item": "Optimize LifeCharter Incubator conversion", "detail": "Entry point is live but conversion to Circle is untracked. Add measurement and refine invitation.", "revenue": true},
+    {"item": "Build email nurture sequences", "detail": "Pathway from Snapshot → Incubator → Circle needs automated nurture. Map the journey, write the sequence.", "revenue": true},
+    {"item": "Document and delegate to Aira", "detail": "VA needs clear SOPs for Incubator support, tracking, and outreach. Create repeatable workflows.", "revenue": false},
+    {"item": "Create sales process documentation", "detail": "From lead to client needs clear steps, scripts, and follow-up rhythms. Document the sacred sales pathway.", "revenue": true},
+    {"item": "Set concrete audience growth targets", "detail": "Social following and email list need specific goals. Define Q3 targets for each channel.", "revenue": false},
+    {"item": "Build content repurposing SOP", "detail": "Daily episode → weekly article → social posts → email. Systematize the content flywheel.", "revenue": false}
+  ]
+};
+
+/* ---------- render (do not edit) ---------- */
+const PILL={live:["p-live","Live"],built:["p-built","Built"],inprogress:["p-prog","In progress"],pending:["p-pend","Pending"],internal:["p-int","Internal"]};
+const APILL={shipped:["p-live","Shipped"],made:["p-built","Made only"],inprogress:["p-prog","In progress"],internal:["p-int","Internal live"]};
+const esc=s=>(s==null?"":String(s)).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+
+function renderMeta(){
+  const m=DASHBOARD_DATA.meta;
+  document.getElementById("statusbar").innerHTML=
+    `<span class="chip"><span class="dot${m.revenue_mode?"":" live"}"></span>Revenue mode <b>${m.revenue_mode?"ACTIVE":"off"}</b></span>`+
+    `<span class="chip"><span class="dot"></span>${esc(m.retreat_note)}</span>`+
+    `<span class="chip"><span class="dot live"></span>Quarter <b>${esc(m.quarter)}</b></span>`+
+    `<span class="chip"><span class="dot live"></span><b>${esc(m.data_state)}</b></span>`;
+  document.getElementById("foot-left").textContent=`LifeCharter Command Dashboard · ${esc(m.quarter)} · generated ${esc(m.generated)}`;
+}
+function renderOutcomes(){
+  document.getElementById("outcomes-body").innerHTML=DASHBOARD_DATA.outcomes.map(o=>
+    `<tr><td><b>${esc(o.outcome)}</b></td><td>${esc(o.evidence)}</td><td>${o.metric_moved?esc(o.metric_moved):'<span style="color:var(--pending)">—</span>'}</td><td>${esc(o.quarter)}</td></tr>`
+  ).join("")||`<tr><td colspan="4" style="text-align:center;color:var(--pending);padding:18px">No outcomes returned</td></tr>`;
+}
+function renderActions(){
+  const a=DASHBOARD_DATA.actions;
+  const made=a.length, shipped=a.filter(x=>x.status==="shipped").length, leak=a.filter(x=>x.status==="made").length;
+  document.getElementById("countline").innerHTML=
+    `<div class="c"><div class="lab">Logged</div><div class="v">${made}</div></div>`+
+    `<div class="c"><div class="lab">Shipped</div><div class="v">${shipped}</div></div>`+
+    `<div class="c leak"><div class="lab">Made, not shipped</div><div class="v">${leak}</div></div>`;
+  document.getElementById("actions-body").innerHTML=a.map(x=>{
+    const p=APILL[x.status]||APILL.made;
+    const ship=x.shipped?`<b>${esc(x.shipped)}</b>`:`<span class="no">Not shipped</span>`;
+    return `<tr><td>${esc(x.item)}</td><td class="made">${esc(x.made)}</td><td class="ship">${ship}</td><td><span class="pill ${p[0]}">${p[1]}</span></td></tr>`;
+  }).join("");
+}
+function renderMetrics(){
+  document.getElementById("metrics-grid").innerHTML=DASHBOARD_DATA.metrics.map(m=>{
+    const has=m.current!==null&&m.current!=="";
+    const now=has?`<span class="now">${esc(m.current)}</span>`:`<span class="now pending">—</span>`;
+    const stateLabel={ "needs-target":["p-pend","Needs target"],"confirm":["p-pend","Confirm"],"on-track":["p-live","On track"],"in-flight":["p-prog","In flight"],"scheduled":["p-pend","Scheduled"] }[m.state]||["p-pend",esc(m.state)];
+    return `<div class="metric"><div class="cat">${esc(m.category)}</div><h3>${esc(m.name)}</h3>`+
+      `<div class="nums">${now}<span class="tgt">Target <b>${esc(m.target)}</b></span></div>`+
+      `<div class="bar"><i style="width:${Math.max(0,Math.min(100,m.progress||0))}%"></i></div>`+
+      `<div class="foot"><span class="src">SOURCE: ${esc(m.source)}</span><span class="pill ${stateLabel[0]}">${stateLabel[1]}</span></div></div>`;
+  }).join("");
+}
+function renderProjects(){
+  document.getElementById("projects-body").innerHTML=DASHBOARD_DATA.projects.map(g=>
+    `<div class="group"><h3>${esc(g.group)}</h3><table class="assets">`+
+    g.items.map(it=>{const p=PILL[it.status]||PILL.pending;
+      return `<tr><td class="name">${esc(it.name)}<small>${esc(it.sub)}</small></td><td><span class="pill ${p[0]}">${p[1]}</span></td><td class="note">${esc(it.note)}</td></tr>`;
+    }).join("")+`</table></div>`
+  ).join("");
+}
+function renderGap(){
+  document.getElementById("gap-body").innerHTML=DASHBOARD_DATA.gap.map(g=>
+    `<li><h4>${esc(g.item)}</h4><p>${esc(g.detail)}</p>${g.revenue?'<span class="rev">↳ revenue-connected</span>':''}</li>`
+  ).join("");
+}
+renderMeta();renderOutcomes();renderActions();renderMetrics();renderProjects();renderGap();
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+  t.classList.add("active");document.getElementById(t.dataset.p).classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+}));
+</script>
+</body>
+</html>
