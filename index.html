@@ -167,14 +167,15 @@ const DASHBOARD_DATA = {
     "generated": "2026-05-31",
     "revenue_mode": true,
     "retreat_note": "LifeCharter Circle launches Q3",
-    "data_state": "Quarterly audit — live: Global Control, PostStream, Vercel"
+    "data_state": "Comprehensive tracker — all projects, tasks, and technical debt"
   },
   "outcomes": [
     {"outcome": "LifeCharter Alignment Snapshot fully operational", "evidence": "LIVE at lifecharter-alignment-snapshot.vercel.app — 36-question assessment, AI report generation, email delivery, CRM integration", "metric_moved": "Lead capture active; conversion tracking in progress", "quarter": "Q2 2026"},
     {"outcome": "Life by Design Summit workflow built", "evidence": "24 email templates, 5 workflows, 12 tags created in Global Control — pending activation", "metric_moved": "Automation infrastructure ready", "quarter": "Q2 2026"},
     {"outcome": "AI Fleet operational with specialized agents", "evidence": "11 agents active: Mariposa, Curiosity Catalyst, Email Ember, Funnel Architect, Story Steward, Babs Voicekeeper, Stagecraft Sage, Clarity Compass, Consequence Curator, KeeJay, Sumbal", "metric_moved": "Content production capacity increased", "quarter": "Q2 2026"},
     {"outcome": "PostStream social scheduling system deployed", "evidence": "ImageKit integration, automated posting to Instagram and LinkedIn, cron scheduling active", "metric_moved": "Consistent social presence established", "quarter": "Q2 2026"},
-    {"outcome": "LifeCharter brand system evolved", "evidence": "New brand board with Deep Indigo, Royal Plum, Sacred Teal, Warm Gold palette; typography system with Cormorant Garamond and Open Sans", "metric_moved": "Visual identity elevated", "quarter": "Q2 2026"}
+    {"outcome": "LifeCharter brand system evolved", "evidence": "New brand board with Deep Indigo, Royal Plum, Sacred Teal, Warm Gold palette; typography system with Cormorant Garamond and Open Sans", "metric_moved": "Visual identity elevated", "quarter": "Q2 2026"},
+    {"outcome": "Accountability Dashboard created", "evidence": "Comprehensive tracker deployed at sacred-kaleidoscope-dashboard.vercel.app with butterfly branding", "metric_moved": "Business visibility and tracking system established", "quarter": "Q2 2026"}
   ],
   "actions": [
     {"item": "LifeCharter Alignment Snapshot (assessment + AI report + CRM)", "made": "May 2026", "shipped": "Live — lifecharter-alignment-snapshot.vercel.app", "status": "shipped"},
@@ -190,7 +191,24 @@ const DASHBOARD_DATA = {
     {"item": "Email nurture sequences (LifeCharter pathway)", "made": "Spec complete", "shipped": "", "status": "inprogress"},
     {"item": "Content repurposing SOP", "made": "Drafted", "shipped": "", "status": "made"},
     {"item": "Sales process documentation", "made": "In development", "shipped": "", "status": "inprogress"},
-    {"item": "Team delegation system (Aira workflows)", "made": "Partial", "shipped": "", "status": "inprogress"}
+    {"item": "Team delegation system (Aira workflows)", "made": "Partial", "shipped": "", "status": "inprogress"},
+    {"item": "Accountability Dashboard creation", "made": "May 2026", "shipped": "Live — sacred-kaleidoscope-dashboard.vercel.app", "status": "shipped"},
+    {"item": "Fix Navigation on Alignment Snapshot (scroll to top)", "made": "Identified", "shipped": "", "status": "pending"},
+    {"item": "Quizforma Incubator questionnaire fix (blank page)", "made": "Identified", "shipped": "", "status": "pending"},
+    {"item": "Connect Mailgun in Global Control", "made": "API key ready", "shipped": "", "status": "pending"},
+    {"item": "Migrate landing pages to Titanium Suite", "made": "Assessment needed", "shipped": "", "status": "pending"},
+    {"item": "Set up ElevenLabs custom voice clone", "made": "API key configured", "shipped": "", "status": "pending"},
+    {"item": "WizLead unraveling", "made": "High priority identified", "shipped": "", "status": "pending"},
+    {"item": "Summit registration page", "made": "", "shipped": "", "status": "pending"},
+    {"item": "Summit speaker info form (Quizforma)", "made": "", "shipped": "", "status": "pending"},
+    {"item": "Summit social post schedule", "made": "", "shipped": "", "status": "pending"},
+    {"item": "Speaker engagement coordination", "made": "", "shipped": "", "status": "pending"},
+    {"item": "Prayerful Living landing page", "made": "", "shipped": "", "status": "pending"},
+    {"item": "Google Drive skill activation", "made": "Awaiting OAuth token", "shipped": "", "status": "pending"},
+    {"item": "Becoming Uncaged book compilation", "made": "Content ready", "shipped": "", "status": "pending"},
+    {"item": "Conversations of Consequence book compilation", "made": "Content ready", "shipped": "", "status": "pending"},
+    {"item": "AmiLynne Speaks speaker kit", "made": "", "shipped": "", "status": "pending"},
+    {"item": "AmiLynne Speaks booking page", "made": "", "shipped": "", "status": "pending"}
   ],
   "metrics": [
     {"category": "North Star", "name": "LifeCharter Circle members", "current": "0", "target": "20 founding members", "source": "Manual tracking", "progress": 0, "state": "confirm"},
@@ -199,20 +217,23 @@ const DASHBOARD_DATA = {
     {"category": "Engagement", "name": "LifeCharter Incubator registrations", "current": "TBD", "target": "10/month", "source": "Global Control forms", "progress": 0, "state": "confirm"},
     {"category": "Content", "name": "Conversations of Consequence episodes", "current": "150+", "target": "Daily (365/year)", "source": "Content archive", "progress": 41, "state": "on-track"},
     {"category": "Social", "name": "Instagram + LinkedIn followers", "current": "Growing", "target": "Not set", "source": "PostStream analytics", "progress": 0, "state": "needs-target"},
-    {"category": "Systems", "name": "Active automations", "current": "5 workflows", "target": "15 workflows", "source": "Global Control", "progress": 33, "state": "on-track"}
+    {"category": "Systems", "name": "Active automations", "current": "5 workflows", "target": "15 workflows", "source": "Global Control", "progress": 33, "state": "on-track"},
+    {"category": "Technical Debt", "name": "Critical bugs/fixes pending", "current": "6 items", "target": "0", "source": "Dashboard tracker", "progress": 0, "state": "confirm"},
+    {"category": "Summit", "name": "Summit preparation items", "current": "0/6 complete", "target": "6/6", "source": "Project tracker", "progress": 0, "state": "confirm"},
+    {"category": "Speaking", "name": "AmiLynne Speaks assets", "current": "0/2 complete", "target": "2/2", "source": "Project tracker", "progress": 0, "state": "confirm"}
   ],
   "projects": [
     {"group": "Public-facing sites", "items": [
       {"name": "lifecharter-alignment-snapshot.vercel.app", "sub": "LifeCharter assessment + AI report", "status": "live", "note": "Fully operational — 36 questions, GPT-4o reports, email delivery, CRM sync"},
       {"name": "amilynnecarroll.com", "sub": "Main presence + LifeCharter hub", "status": "live", "note": "Core website — needs brand refresh"},
-      {"name": "Sacred Kaleidoscope Community pages", "sub": "Community and content hub", "status": "live", "note": "Active — daily content, weekly articles"}
+      {"name": "Sacred Kaleidoscope Community pages", "sub": "Community and content hub", "status": "live", "note": "Active — daily content, weekly articles"},
+      {"name": "Accountability Dashboard", "sub": "Business tracking and project management", "status": "live", "note": "Live at sacred-kaleidoscope-dashboard.vercel.app — comprehensive tracker"}
     ]},
     {"group": "Funnels & products", "items": [
       {"name": "LifeCharter Alignment Snapshot", "sub": "Free assessment → email list → nurture", "status": "live", "note": "Primary lead magnet — operational"},
       {"name": "LifeCharter Incubator", "sub": "Free 90-minute workshop", "status": "live", "note": "Entry point to Circle — needs optimization"},
       {"name": "LifeCharter Circle", "sub": "Paid coaching container", "status": "inprogress", "note": "Program designed — launching Q3"},
-      {"name": "Life by Design Summit", "sub": "21-day challenge + summit", "status": "built", "note": "Workflows ready — pending activation"},
-      {"name": "Conversations of Consequence book", "sub": "Published content compilation", "status": "pending", "note": "Content ready — compilation in planning"}
+      {"name": "Life by Design Summit", "sub": "21-day challenge + summit", "status": "built", "note": "Workflows ready — pending activation"}
     ]},
     {"group": "Internal systems", "items": [
       {"name": "AI Fleet (11 agents)", "sub": "Specialized support agents", "status": "internal", "note": "All operational with defined roles"},
@@ -226,6 +247,36 @@ const DASHBOARD_DATA = {
       {"name": "Weekly articles", "sub": "Long-form written content", "status": "live", "note": "Weekly cadence — Alignment Anchor integration"},
       {"name": "Social media content", "sub": "Instagram + LinkedIn posts", "status": "live", "note": "Daily posts scheduled via PostStream"},
       {"name": "Email newsletter", "sub": "Weekly teachings + invitations", "status": "live", "note": "Regular cadence established"}
+    ]},
+    {"group": "🔧 Technical Debt", "items": [
+      {"name": "Fix Navigation on Alignment Snapshot", "sub": "Scroll to top not functioning between dimensions", "status": "pending", "note": "Bug identified — needs JavaScript fix"},
+      {"name": "Quizforma Incubator questionnaire", "sub": "Registration form showing blank/navy page", "status": "pending", "note": "Quiz created but not published — needs debugging"},
+      {"name": "Connect Mailgun in Global Control", "sub": "Email delivery infrastructure", "status": "pending", "note": "API key ready: 36af6158e92... — manual setup required"},
+      {"name": "Migrate landing pages to Titanium Suite", "sub": "Platform consolidation", "status": "pending", "note": "Assessment needed — MintBird/Page Sprout routing"},
+      {"name": "Set up ElevenLabs custom voice clone", "sub": "Voice AI for content", "status": "pending", "note": "API key configured — custom voice clone needed"},
+      {"name": "WizLead unraveling", "sub": "High priority business task", "status": "pending", "note": "Requires investigation and resolution"},
+      {"name": "Google Drive skill activation", "sub": "OAuth token needed", "status": "pending", "note": "Awaiting Google Drive OAuth 2.0 access token"}
+    ]},
+    {"group": "🎪 Life by Design Summit", "items": [
+      {"name": "Summit registration page", "sub": "Landing page with registration form", "status": "pending", "note": "Needs design + payment integration"},
+      {"name": "Speaker info form (Quizforma)", "sub": "Form for speakers to submit information", "status": "pending", "note": "Create speaker onboarding form"},
+      {"name": "Summit social post schedule", "sub": "Promotional content calendar", "status": "pending", "note": "Plan 4-6 week promotional campaign"},
+      {"name": "Speaker engagement coordination", "sub": "Outreach and management", "status": "pending", "note": "Contact and confirm summit speakers"},
+      {"name": "Summit checklist", "sub": "Comprehensive event planning", "status": "pending", "note": "Create detailed execution checklist"},
+      {"name": "Activate summit workflows", "sub": "24 emails, 5 workflows in Global Control", "status": "built", "note": "Built — need Chad's team to add content to flows"}
+    ]},
+    {"group": "🎤 AmiLynne Speaks", "items": [
+      {"name": "Speaker kit / one-sheet", "sub": "Professional speaking credentials", "status": "pending", "note": "Design and write speaker one-sheet"},
+      {"name": "Booking page", "sub": "Speaking inquiry and booking", "status": "pending", "note": "Create /speaking landing page with form"},
+      {"name": "Speaker reel / video intro", "sub": "3-5 minute speaking highlights", "status": "pending", "note": "Compile from existing video content"},
+      {"name": "Keynote topics outline", "sub": "3-5 signature talks", "status": "pending", "note": "Document LifeCharter, Alignment, Yellow Yield topics"},
+      {"name": "Testimonials and case studies", "sub": "Social proof for speaking", "status": "pending", "note": "Collect and format client testimonials"}
+    ]},
+    {"group": "📚 Books", "items": [
+      {"name": "Becoming Uncaged", "sub": "Map for the Middle of It — incarceration/reentry focus", "status": "pending", "note": "Content ready — compilation and formatting needed"},
+      {"name": "Conversations of Consequence book", "sub": "Published content compilation", "status": "pending", "note": "150+ episodes — curation and editing needed"},
+      {"name": "LifeCharter book", "sub": "12 dimensions lifestyle design system", "status": "pending", "note": "Framework documented — book structure needed"},
+      {"name": "Prayerful Living book", "sub": "Spiritual alignment and practice", "status": "pending", "note": "Concept stage — needs landing page first"}
     ]}
   ],
   "gap": [
@@ -233,10 +284,14 @@ const DASHBOARD_DATA = {
     {"item": "Activate Life by Design Summit workflows", "detail": "24 emails and 5 workflows built. Need Chad's team to add content to flows and activate. Ready to generate leads.", "revenue": true},
     {"item": "Optimize LifeCharter Incubator conversion", "detail": "Entry point is live but conversion to Circle is untracked. Add measurement and refine invitation.", "revenue": true},
     {"item": "Build email nurture sequences", "detail": "Pathway from Snapshot → Incubator → Circle needs automated nurture. Map the journey, write the sequence.", "revenue": true},
+    {"item": "Fix critical technical debt", "detail": "6 items: Alignment Snapshot navigation, Quizforma questionnaire, Mailgun connection, landing page migration, ElevenLabs voice, WizLead.", "revenue": false},
+    {"item": "Complete Summit preparation", "detail": "Registration page, speaker forms, social schedule, speaker coordination, checklist. 6 items to launch.", "revenue": true},
+    {"item": "Build AmiLynne Speaks presence", "detail": "Speaker kit, booking page, reel, topics, testimonials. Establish speaking as revenue stream.", "revenue": true},
     {"item": "Document and delegate to Aira", "detail": "VA needs clear SOPs for Incubator support, tracking, and outreach. Create repeatable workflows.", "revenue": false},
     {"item": "Create sales process documentation", "detail": "From lead to client needs clear steps, scripts, and follow-up rhythms. Document the sacred sales pathway.", "revenue": true},
     {"item": "Set concrete audience growth targets", "detail": "Social following and email list need specific goals. Define Q3 targets for each channel.", "revenue": false},
-    {"item": "Build content repurposing SOP", "detail": "Daily episode → weekly article → social posts → email. Systematize the content flywheel.", "revenue": false}
+    {"item": "Build content repurposing SOP", "detail": "Daily episode → weekly article → social posts → email. Systematize the content flywheel.", "revenue": false},
+    {"item": "Progress book projects", "detail": "Becoming Uncaged, Conversations of Consequence compilation, LifeCharter book. Content exists — needs compilation.", "revenue": true}
   ]
 };
 
