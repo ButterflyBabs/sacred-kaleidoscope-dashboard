@@ -672,9 +672,9 @@ function renderActions(){
       return true;
     });
   }
-  const totalSeeded=currentBizFilter==='all'?a.length:(currentBizFilter==='all'?a:a.filter(x=>x.businessLine===currentBizFilter)).length;
+  const totalSeeded=(currentBizFilter==='all'?a:a.filter(x=>x.businessLine===currentBizFilter)).filter(x=>x.status==="seeded").length;
+  const totalRooted=(currentBizFilter==='all'?a:a.filter(x=>x.businessLine===currentBizFilter)).filter(x=>x.status==="rooted"||x.status==="becoming").length;
   const totalBloomed=(currentBizFilter==='all'?a:a.filter(x=>x.businessLine===currentBizFilter)).filter(x=>x.status==="bloomed").length;
-  const totalRooted=(currentBizFilter==='all'?a:a.filter(x=>x.businessLine===currentBizFilter)).filter(x=>x.status==="rooted"||x.status==="becoming"||x.status==="seeded").length;
   
   // Show/hide top priorities section
   const prioritiesSection=document.getElementById("top-priorities");
