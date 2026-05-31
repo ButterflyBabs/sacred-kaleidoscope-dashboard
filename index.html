@@ -179,7 +179,8 @@
   <button class="tab" data-p="actions"><span class="n">02</span>Actions Taken</button>
   <button class="tab" data-p="metrics"><span class="n">03</span>Results vs Metrics</button>
   <button class="tab" data-p="projects"><span class="n">04</span>Project Reports</button>
-  <button class="tab" data-p="gap"><span class="n">05</span>Gap to Thriving Business</button>
+  <button class="tab" data-p="weekly"><span class="n">05</span>Weekly Tasks</button>
+  <button class="tab" data-p="gap"><span class="n">06</span>Gap to Thriving Business</button>
 </div></nav>
 <main class="wrap">
   <section class="panel active" id="outcomes">
@@ -219,6 +220,11 @@
   <section class="panel" id="projects">
     <div class="sec-head"><h2>Project Reports</h2><span class="meta">Every asset, honest status</span></div>
     <div id="projects-body"></div>
+  </section>
+  <section class="panel" id="weekly">
+    <div class="sec-head"><h2>Weekly Tasks</h2><span class="meta">This week's focus · prioritized</span></div>
+    <p class="lead">The specific tasks to complete this week across all business lines. Check off as you go.</p>
+    <div id="weekly-body"></div>
   </section>
   <section class="panel" id="gap">
     <div class="sec-head"><h2>Gap to a Thriving Business</h2><span class="meta">Sequenced · mission-first</span></div>
@@ -630,6 +636,14 @@ const DASHBOARD_DATA = {
     {"item": "Set concrete audience growth targets", "detail": "Social following and email list need specific goals. Define Q3 targets for each channel.", "revenue": false},
     {"item": "Build content repurposing SOP", "detail": "Daily episode → weekly article → social posts → email. Systematize the content flywheel.", "revenue": false},
     {"item": "Progress book projects", "detail": "Becoming Uncaged, Conversations of Consequence compilation, LifeCharter book. Content exists — needs compilation.", "revenue": true}
+  ],
+  "weekly": [
+    {"task": "Record daily Conversations of Consequence episode", "businessLine": "carroll-media", "day": "Daily", "completed": false},
+    {"task": "Publish weekly article", "businessLine": "carroll-media", "day": "Thursday", "completed": false},
+    {"task": "Schedule social posts for the week", "businessLine": "carroll-media", "day": "Monday", "completed": false},
+    {"task": "Review dashboard and update statuses", "businessLine": "command-suite", "day": "Daily", "completed": false},
+    {"task": "Follow up with LifeCharter Incubator leads", "businessLine": "lifecharter", "day": "Tuesday", "completed": false},
+    {"task": "Check PostStream scheduled posts", "businessLine": "carroll-media", "day": "Daily", "completed": false}
   ]
 };
 
@@ -820,7 +834,36 @@ function renderGap(){
     `<li><h4>${esc(g.item)}</h4><p>${linkify(esc(g.detail))}</p>${g.revenue?'<span class="rev">↳ revenue-connected</span>':''}</li>`
   ).join("");
 }
-renderMeta();renderOutcomes();updateBizCounts();renderActions();renderMetrics();renderProjects();renderGap();
+function renderWeekly(){
+  const days=['Monday','Tuesday','Wednesday','Thursday','Friday','Daily'];
+  const byDay={};
+  days.forEach(d=>byDay[d]=[]);
+  DASHBOARD_DATA.weekly.forEach(t=>{
+    if(byDay[t.day])byDay[t.day].push(t);
+  });
+  let html='';
+  days.forEach(day=>{
+    const tasks=byDay[day];
+    if(tasks.length){
+      html+=`<div class="group"><h3>${day}</h3><table class="assets">`;
+      tasks.forEach(t=>{
+        const checked=t.completed?'checked':'';
+        const strike=t.completed?'style="text-decoration:line-through;color:var(--muted)"':'';
+        html+=`<tr><td class="name"><label style="display:flex;align-items:center;gap:10px;cursor:pointer"><input type="checkbox" ${checked} onchange="toggleWeeklyTask('${t.task}')"> <span ${strike}>${esc(t.task)}</span></label></td><td><span class="pill p-int">${esc(t.businessLine)}</span></td></tr>`;
+      });
+      html+=`</table></div>`;
+    }
+  });
+  document.getElementById("weekly-body").innerHTML=html||'<p style="text-align:center;color:var(--muted);padding:40px">No weekly tasks defined yet.</p>';
+}
+function toggleWeeklyTask(taskName){
+  const task=DASHBOARD_DATA.weekly.find(t=>t.task===taskName);
+  if(task){
+    task.completed=!task.completed;
+    renderWeekly();
+  }
+}
+renderMeta();renderOutcomes();updateBizCounts();renderActions();renderMetrics();renderProjects();renderGap();renderWeekly();
 document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
   document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
   document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
