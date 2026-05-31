@@ -635,7 +635,7 @@ const DASHBOARD_DATA = {
 
 /* ---------- render (do not edit) ---------- */
 const PILL={live:["p-live","Live"],built:["p-built","Built"],inprogress:["p-prog","In progress"],pending:["p-pend","Pending"],internal:["p-int","Internal"]};
-const APILL={shipped:["p-live","Bloomed"],made:["p-built","Rooted"],inprogress:["p-prog","Becoming"],internal:["p-int","Internal live"],pending:["p-pend","Seeded"],live:["p-live","Bloomed"]};
+const APILL={shipped:["p-live","Bloomed"],made:["p-built","Rooted"],inprogress:["p-prog","Becoming"],internal:["p-int","Internal live"],pending:["p-pend","Seeded"],live:["p-live","Bloomed"],bloomed:["p-live","Bloomed"],rooted:["p-built","Rooted"],seeded:["p-pend","Seeded"],becoming:["p-prog","Becoming"]};
 const esc=s=>(s==null?"":String(s)).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
 
 function linkify(text){
