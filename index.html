@@ -139,6 +139,12 @@
   .hot-actions h4{color:var(--indigo);margin-bottom:12px}
   .hot-actions .action{font-size:13px;color:var(--ink);margin-bottom:8px;padding-left:16px;position:relative}
   .hot-actions .action::before{content:"→";position:absolute;left:0;color:var(--gold);font-weight:700}
+  .biz-filter{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 16px;padding:12px;background:var(--card);border:1px solid var(--line);border-radius:12px}
+  .biz-tab{appearance:none;border:none;background:var(--ivory);font-family:var(--body);font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;padding:8px 14px;border-radius:20px;white-space:nowrap;transition:all .15s;display:flex;align-items:center;gap:6px}
+  .biz-tab:hover{background:var(--line);color:var(--indigo)}
+  .biz-tab.active{background:var(--indigo);color:var(--ivory)}
+  .biz-tab .count{font-size:10px;background:rgba(255,255,255,.2);padding:2px 6px;border-radius:10px;min-width:18px;text-align:center}
+  .biz-tab.active .count{background:rgba(255,255,255,.3)}
 </style>
 </head>
 <body>
@@ -166,6 +172,16 @@
   <section class="panel" id="actions">
     <div class="sec-head"><h2>Actions Taken</h2><span class="meta">Seeded · Rooted · Bloomed</span></div>
     <div class="teeth"><b>The sacred cycle:</b> <b>Seeded</b> = intentions planted. <b>Rooted</b> = growing but not yet visible. <b>Bloomed</b> = fully manifested and alive.</div>
+    <div class="biz-filter" id="biz-filter">
+      <button class="biz-tab active" data-biz="all">All <span class="count" id="count-all"></span></button>
+      <button class="biz-tab" data-biz="lifecharter">LifeCharter <span class="count" id="count-lifecharter"></span></button>
+      <button class="biz-tab" data-biz="command-suite">Command Suite <span class="count" id="count-command-suite"></span></button>
+      <button class="biz-tab" data-biz="carroll-media">Carroll Media <span class="count" id="count-carroll-media"></span></button>
+      <button class="biz-tab" data-biz="speaks">AmiLynne Speaks <span class="count" id="count-speaks"></span></button>
+      <button class="biz-tab" data-biz="writes">AmiLynne Writes <span class="count" id="count-writes"></span></button>
+      <button class="biz-tab" data-biz="embraced">Embraced Fully <span class="count" id="count-embraced"></span></button>
+      <button class="biz-tab" data-biz="babs-beau">Babs & Beau <span class="count" id="count-babs-beau"></span></button>
+    </div>
     <div class="countline" id="countline"></div>
     <table class="actions"><thead><tr><th style="width:40%">Intention</th><th>Rooted (When)</th><th>Bloomed (Where)</th><th>Stage</th></tr></thead><tbody id="actions-body"></tbody></table>
   </section>
@@ -221,31 +237,40 @@ const DASHBOARD_DATA = {
     {"outcome": "Accountability Dashboard created", "evidence": "Comprehensive tracker deployed at sacred-kaleidoscope-dashboard.vercel.app with butterfly branding", "metric_moved": "Business visibility and tracking system established", "quarter": "Q2 2026"}
   ],
   "actions": [
-    {"item": "LifeCharter Alignment Snapshot (assessment + AI report + CRM)", "rooted": "May 2026", "bloomed": "Live — lifecharter-alignment-snapshot.vercel.app", "status": "bloomed"},
-    {"item": "Life by Design Summit email workflows (24 templates, 5 flows)", "rooted": "May 2026", "bloomed": "Built — pending Chad's team activation", "status": "becoming"},
-    {"item": "AI Fleet deployment (11 specialized agents)", "rooted": "Apr–May 2026", "bloomed": "Live — all agents operational", "status": "bloomed"},
-    {"item": "PostStream social automation", "rooted": "May 2026", "bloomed": "Live — Instagram + LinkedIn", "status": "bloomed"},
-    {"item": "LifeCharter brand board v2", "rooted": "May 2026", "bloomed": "Live — applied to all assets", "status": "bloomed"},
-    {"item": "Conversations of Consequence DAILY content system", "rooted": "Ongoing", "bloomed": "Live — daily episodes", "status": "bloomed"},
-    {"item": "Weekly article publishing system", "rooted": "Ongoing", "bloomed": "Live — weekly cadence", "status": "bloomed"},
-    {"item": "Global Control CRM integration", "rooted": "May 2026", "bloomed": "Live — contacts, tags, workflows", "status": "bloomed"},
-    {"item": "LifeCharter Circle program design", "rooted": "May 2026", "bloomed": "", "status": "becoming"},
-    {"item": "LifeCharter Incubator funnel optimization", "rooted": "May 2026", "bloomed": "", "status": "becoming"},
-    {"item": "Email nurture sequences (LifeCharter pathway)", "rooted": "Spec complete", "bloomed": "", "status": "becoming"},
-    {"item": "Content repurposing SOP", "rooted": "Drafted", "bloomed": "", "status": "rooted"},
-    {"item": "Sales process documentation", "rooted": "In development", "bloomed": "", "status": "becoming"},
-    {"item": "Team delegation system (Aira workflows)", "rooted": "Partial", "bloomed": "", "status": "becoming"},
-    {"item": "Accountability Dashboard creation", "rooted": "May 2026", "bloomed": "Live — sacred-kaleidoscope-dashboard.vercel.app", "status": "bloomed"},
-    {"item": "Fix Navigation on Alignment Snapshot (scroll to top)", "rooted": "Identified", "bloomed": "", "status": "seeded"},
-    {"item": "Quizforma Incubator questionnaire fix (blank page)", "rooted": "Identified", "bloomed": "", "status": "seeded"},
-    {"item": "Connect Mailgun in Global Control", "rooted": "API key ready", "bloomed": "", "status": "seeded"},
-    {"item": "Migrate landing pages to Titanium Suite", "rooted": "Assessment needed", "bloomed": "", "status": "seeded"},
-    {"item": "Set up ElevenLabs custom voice clone", "rooted": "API key configured", "bloomed": "", "status": "seeded"},
-    {"item": "WizLead unraveling", "rooted": "High priority identified", "bloomed": "", "status": "seeded"},
-    {"item": "Summit registration page", "rooted": "", "bloomed": "", "status": "seeded"},
-    {"item": "Summit speaker info form (Quizforma)", "rooted": "", "bloomed": "", "status": "seeded"},
-    {"item": "Summit social post schedule", "rooted": "", "bloomed": "", "status": "seeded"},
-    {"item": "Speaker engagement coordination", "rooted": "", "bloomed": "", "status": "seeded"},
+    {"item": "LifeCharter Alignment Snapshot (assessment + AI report + CRM)", "rooted": "May 2026", "bloomed": "Live — lifecharter-alignment-snapshot.vercel.app", "status": "bloomed", "businessLine": "lifecharter"},
+    {"item": "Life by Design Summit email workflows (24 templates, 5 flows)", "rooted": "May 2026", "bloomed": "Built — pending Chad's team activation", "status": "becoming", "businessLine": "lifecharter"},
+    {"item": "LifeCharter Circle program design", "rooted": "May 2026", "bloomed": "", "status": "becoming", "businessLine": "lifecharter"},
+    {"item": "LifeCharter Incubator funnel optimization", "rooted": "May 2026", "bloomed": "", "status": "becoming", "businessLine": "lifecharter"},
+    {"item": "Email nurture sequences (LifeCharter pathway)", "rooted": "Spec complete", "bloomed": "", "status": "becoming", "businessLine": "lifecharter"},
+    {"item": "Fix Navigation on Alignment Snapshot (scroll to top)", "rooted": "Identified", "bloomed": "", "status": "seeded", "businessLine": "lifecharter"},
+    {"item": "Quizforma Incubator questionnaire fix (blank page)", "rooted": "Identified", "bloomed": "", "status": "seeded", "businessLine": "lifecharter"},
+    {"item": "Summit registration page", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "lifecharter"},
+    {"item": "Summit speaker info form (Quizforma)", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "lifecharter"},
+    {"item": "Summit social post schedule", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "lifecharter"},
+    {"item": "Speaker engagement coordination", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "lifecharter"},
+    {"item": "AI Fleet deployment (11 specialized agents)", "rooted": "Apr–May 2026", "bloomed": "Live — all agents operational", "status": "bloomed", "businessLine": "command-suite"},
+    {"item": "Global Control CRM integration", "rooted": "May 2026", "bloomed": "Live — contacts, tags, workflows", "status": "bloomed", "businessLine": "command-suite"},
+    {"item": "Accountability Dashboard creation", "rooted": "May 2026", "bloomed": "Live — sacred-kaleidoscope-dashboard.vercel.app", "status": "bloomed", "businessLine": "command-suite"},
+    {"item": "Connect Mailgun in Global Control", "rooted": "API key ready", "bloomed": "", "status": "seeded", "businessLine": "command-suite"},
+    {"item": "Migrate landing pages to Titanium Suite", "rooted": "Assessment needed", "bloomed": "", "status": "seeded", "businessLine": "command-suite"},
+    {"item": "PostStream social automation", "rooted": "May 2026", "bloomed": "Live — Instagram + LinkedIn", "status": "bloomed", "businessLine": "carroll-media"},
+    {"item": "Conversations of Consequence DAILY content system", "rooted": "Ongoing", "bloomed": "Live — daily episodes", "status": "bloomed", "businessLine": "carroll-media"},
+    {"item": "Weekly article publishing system", "rooted": "Ongoing", "bloomed": "Live — weekly cadence", "status": "bloomed", "businessLine": "carroll-media"},
+    {"item": "Content repurposing SOP", "rooted": "Drafted", "bloomed": "", "status": "rooted", "businessLine": "carroll-media"},
+    {"item": "Set up ElevenLabs custom voice clone", "rooted": "API key configured", "bloomed": "", "status": "seeded", "businessLine": "carroll-media"},
+    {"item": "AmiLynne Speaks speaker kit / one-sheet", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "speaks"},
+    {"item": "AmiLynne Speaks booking page", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "speaks"},
+    {"item": "Speaker reel / video intro", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "speaks"},
+    {"item": "Keynote topics outline", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "speaks"},
+    {"item": "Testimonials and case studies", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "speaks"},
+    {"item": "Becoming Uncaged book compilation", "rooted": "Content ready", "bloomed": "", "status": "seeded", "businessLine": "writes"},
+    {"item": "Conversations of Consequence book compilation", "rooted": "Content ready", "bloomed": "", "status": "seeded", "businessLine": "writes"},
+    {"item": "LifeCharter book", "rooted": "Framework documented", "bloomed": "", "status": "seeded", "businessLine": "writes"},
+    {"item": "Prayerful Living landing page", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "embraced"},
+    {"item": "Prayerful Living book", "rooted": "Concept stage", "bloomed": "", "status": "seeded", "businessLine": "embraced"},
+    {"item": "WizLead unraveling", "rooted": "High priority identified", "bloomed": "", "status": "seeded", "businessLine": "babs-beau"},
+    {"item": "Team delegation system (Aira workflows)", "rooted": "Partial", "bloomed": "", "status": "becoming", "businessLine": "babs-beau"},
+    {"item": "Sales process documentation", "rooted": "In development", "bloomed": "", "status": "becoming", "businessLine": "babs-beau"},
     {"item": "Prayerful Living landing page", "rooted": "", "bloomed": "", "status": "seeded"},
     {"item": "Google Drive skill activation", "rooted": "Awaiting OAuth token", "bloomed": "", "status": "seeded"},
     {"item": "Becoming Uncaged book compilation", "rooted": "Content ready", "bloomed": "", "status": "seeded"},
@@ -603,19 +628,49 @@ function renderOutcomes(){
     `<tr><td><b>${esc(o.outcome)}</b></td><td>${esc(o.evidence)}</td><td>${o.metric_moved?esc(o.metric_moved):'<span style="color:var(--pending)">—</span>'}</td><td>${esc(o.quarter)}</td></tr>`
   ).join("")||`<tr><td colspan="4" style="text-align:center;color:var(--pending);padding:18px">No outcomes returned</td></tr>`;
 }
+let currentBizFilter='all';
+
 function renderActions(){
   const a=DASHBOARD_DATA.actions;
-  const seeded=a.length, bloomed=a.filter(x=>x.status==="bloomed").length, rooted=a.filter(x=>x.status==="rooted"||x.status==="becoming"||x.status==="seeded").length;
+  const filtered=currentBizFilter==='all'?a:a.filter(x=>x.businessLine===currentBizFilter);
+  const seeded=filtered.length, bloomed=filtered.filter(x=>x.status==="bloomed").length, rooted=filtered.filter(x=>x.status==="rooted"||x.status==="becoming"||x.status==="seeded").length;
   document.getElementById("countline").innerHTML=
     `<div class="c"><div class="lab">Seeded</div><div class="v">${seeded}</div></div>`+
     `<div class="c"><div class="lab">Bloomed</div><div class="v">${bloomed}</div></div>`+
     `<div class="c rooted"><div class="lab">Rooted</div><div class="v">${rooted}</div></div>`;
-  document.getElementById("actions-body").innerHTML=a.map(x=>{
+  document.getElementById("actions-body").innerHTML=filtered.map(x=>{
     const p=APILL[x.status]||APILL.pending;
     const bloomedDisplay=x.bloomed?`<b>${esc(x.bloomed)}</b>`:`<span class="no">Becoming...</span>`;
     return `<tr><td>${esc(x.item)}</td><td class="made">${esc(x.rooted)}</td><td class="ship">${bloomedDisplay}</td><td><span class="pill ${p[0]}">${p[1]}</span></td></tr>`;
-  }).join("");
+  }).join("")||`<tr><td colspan="4" style="text-align:center;color:var(--pending);padding:18px">No actions for this business line</td></tr>`;
 }
+
+function updateBizCounts(){
+  const a=DASHBOARD_DATA.actions;
+  const counts={
+    all:a.length,
+    lifecharter:a.filter(x=>x.businessLine==="lifecharter").length,
+    "command-suite":a.filter(x=>x.businessLine==="command-suite").length,
+    "carroll-media":a.filter(x=>x.businessLine==="carroll-media").length,
+    speaks:a.filter(x=>x.businessLine==="speaks").length,
+    writes:a.filter(x=>x.businessLine==="writes").length,
+    embraced:a.filter(x=>x.businessLine==="embraced").length,
+    "babs-beau":a.filter(x=>x.businessLine==="babs-beau").length
+  };
+  Object.keys(counts).forEach(k=>{
+    const el=document.getElementById(`count-${k}`);
+    if(el)el.textContent=counts[k];
+  });
+}
+
+document.querySelectorAll(".biz-tab").forEach(t=>{
+  t.addEventListener("click",()=>{
+    document.querySelectorAll(".biz-tab").forEach(x=>x.classList.remove("active"));
+    t.classList.add("active");
+    currentBizFilter=t.dataset.biz;
+    renderActions();
+  });
+});
 function renderMetrics(){
   document.getElementById("metrics-grid").innerHTML=DASHBOARD_DATA.metrics.map((m,idx)=>{
     const has=m.current!==null&&m.current!=="";
@@ -678,7 +733,7 @@ function renderGap(){
     `<li><h4>${esc(g.item)}</h4><p>${esc(g.detail)}</p>${g.revenue?'<span class="rev">↳ revenue-connected</span>':''}</li>`
   ).join("");
 }
-renderMeta();renderOutcomes();renderActions();renderMetrics();renderProjects();renderGap();
+renderMeta();renderOutcomes();updateBizCounts();renderActions();renderMetrics();renderProjects();renderGap();
 document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
   document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
   document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
