@@ -145,6 +145,16 @@
   .biz-tab.active{background:var(--indigo);color:var(--ivory)}
   .biz-tab .count{font-size:10px;background:rgba(255,255,255,.2);padding:2px 6px;border-radius:10px;min-width:18px;text-align:center}
   .biz-tab.active .count{background:rgba(255,255,255,.3)}
+  .top-priorities{background:linear-gradient(135deg,var(--indigo) 0%,var(--plum) 100%);border-radius:12px;padding:20px 24px;margin:16px 0;color:var(--ivory)}
+  .top-priorities h4{font-family:var(--display);font-size:18px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .top-priorities .priority-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.15)}
+  .top-priorities .priority-item:last-child{border-bottom:none}
+  .top-priorities .priority-num{width:28px;height:28px;background:var(--gold);color:var(--indigo);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;font-size:14px;flex-shrink:0}
+  .top-priorities .priority-text{font-size:14px;line-height:1.5}
+  .top-priorities .priority-text small{display:block;font-size:12px;opacity:.8;margin-top:4px}
+  .priority-row{background:rgba(212,175,99,.1)}
+  .priority-row td:first-child{padding-left:12px}
+  .priority-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;background:var(--gold);color:var(--indigo);padding:2px 8px;border-radius:10px;margin-left:8px;text-transform:uppercase;letter-spacing:.05em}
 </style>
 </head>
 <body>
@@ -181,6 +191,10 @@
       <button class="biz-tab" data-biz="writes">AmiLynne Writes <span class="count" id="count-writes"></span></button>
       <button class="biz-tab" data-biz="embraced">Embraced Fully <span class="count" id="count-embraced"></span></button>
       <button class="biz-tab" data-biz="babs-beau">Babs & Beau <span class="count" id="count-babs-beau"></span></button>
+    </div>
+    <div id="top-priorities" class="top-priorities" style="display:none;">
+      <h4>🔥 Top 3 Priorities</h4>
+      <div id="priority-list"></div>
     </div>
     <div class="countline" id="countline"></div>
     <table class="actions"><thead><tr><th style="width:40%">Intention</th><th>Rooted (When)</th><th>Bloomed (Where)</th><th>Stage</th></tr></thead><tbody id="actions-body"></tbody></table>
@@ -237,10 +251,10 @@ const DASHBOARD_DATA = {
     {"outcome": "Accountability Dashboard created", "evidence": "Comprehensive tracker deployed at sacred-kaleidoscope-dashboard.vercel.app with butterfly branding", "metric_moved": "Business visibility and tracking system established", "quarter": "Q2 2026"}
   ],
   "actions": [
+    {"item": "LifeCharter Circle program design", "rooted": "May 2026", "bloomed": "", "status": "becoming", "businessLine": "lifecharter", "priority": 1, "why": "Revenue foundation — need to launch to founding members"},
+    {"item": "Life by Design Summit email workflows (24 templates, 5 flows)", "rooted": "May 2026", "bloomed": "Built — pending Chad's team activation", "status": "becoming", "businessLine": "lifecharter", "priority": 2, "why": "Lead generation engine — ready to activate"},
+    {"item": "LifeCharter Incubator funnel optimization", "rooted": "May 2026", "bloomed": "", "status": "becoming", "businessLine": "lifecharter", "priority": 3, "why": "Entry point to Circle — conversion needs tracking"},
     {"item": "LifeCharter Alignment Snapshot (assessment + AI report + CRM)", "rooted": "May 2026", "bloomed": "Live — lifecharter-alignment-snapshot.vercel.app", "status": "bloomed", "businessLine": "lifecharter"},
-    {"item": "Life by Design Summit email workflows (24 templates, 5 flows)", "rooted": "May 2026", "bloomed": "Built — pending Chad's team activation", "status": "becoming", "businessLine": "lifecharter"},
-    {"item": "LifeCharter Circle program design", "rooted": "May 2026", "bloomed": "", "status": "becoming", "businessLine": "lifecharter"},
-    {"item": "LifeCharter Incubator funnel optimization", "rooted": "May 2026", "bloomed": "", "status": "becoming", "businessLine": "lifecharter"},
     {"item": "Email nurture sequences (LifeCharter pathway)", "rooted": "Spec complete", "bloomed": "", "status": "becoming", "businessLine": "lifecharter"},
     {"item": "Fix Navigation on Alignment Snapshot (scroll to top)", "rooted": "Identified", "bloomed": "", "status": "seeded", "businessLine": "lifecharter"},
     {"item": "Quizforma Incubator questionnaire fix (blank page)", "rooted": "Identified", "bloomed": "", "status": "seeded", "businessLine": "lifecharter"},
@@ -248,29 +262,31 @@ const DASHBOARD_DATA = {
     {"item": "Summit speaker info form (Quizforma)", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "lifecharter"},
     {"item": "Summit social post schedule", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "lifecharter"},
     {"item": "Speaker engagement coordination", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "lifecharter"},
+    {"item": "Connect Mailgun in Global Control", "rooted": "API key ready", "bloomed": "", "status": "seeded", "businessLine": "command-suite", "priority": 1, "why": "Email delivery critical for all nurture sequences"},
+    {"item": "Migrate landing pages to Titanium Suite", "rooted": "Assessment needed", "bloomed": "", "status": "seeded", "businessLine": "command-suite", "priority": 2, "why": "Consolidate tech stack — MintBird/Page Sprout routing"},
+    {"item": "Fix Navigation on Alignment Snapshot (scroll to top)", "rooted": "Identified", "bloomed": "", "status": "seeded", "businessLine": "command-suite", "priority": 3, "why": "User experience bug blocking smooth assessment flow"},
     {"item": "AI Fleet deployment (11 specialized agents)", "rooted": "Apr–May 2026", "bloomed": "Live — all agents operational", "status": "bloomed", "businessLine": "command-suite"},
     {"item": "Global Control CRM integration", "rooted": "May 2026", "bloomed": "Live — contacts, tags, workflows", "status": "bloomed", "businessLine": "command-suite"},
     {"item": "Accountability Dashboard creation", "rooted": "May 2026", "bloomed": "Live — sacred-kaleidoscope-dashboard.vercel.app", "status": "bloomed", "businessLine": "command-suite"},
-    {"item": "Connect Mailgun in Global Control", "rooted": "API key ready", "bloomed": "", "status": "seeded", "businessLine": "command-suite"},
-    {"item": "Migrate landing pages to Titanium Suite", "rooted": "Assessment needed", "bloomed": "", "status": "seeded", "businessLine": "command-suite"},
+    {"item": "Content repurposing SOP", "rooted": "Drafted", "bloomed": "", "status": "rooted", "businessLine": "carroll-media", "priority": 1, "why": "Maximize content ROI — daily episode → weekly article → social → email"},
+    {"item": "Set up ElevenLabs custom voice clone", "rooted": "API key configured", "bloomed": "", "status": "seeded", "businessLine": "carroll-media", "priority": 2, "why": "Scale content production with AI voice for Babs"},
+    {"item": "Quizforma Incubator questionnaire fix (blank page)", "rooted": "Identified", "bloomed": "", "status": "seeded", "businessLine": "carroll-media", "priority": 3, "why": "Blocking Incubator registrations — critical funnel leak"},
     {"item": "PostStream social automation", "rooted": "May 2026", "bloomed": "Live — Instagram + LinkedIn", "status": "bloomed", "businessLine": "carroll-media"},
     {"item": "Conversations of Consequence DAILY content system", "rooted": "Ongoing", "bloomed": "Live — daily episodes", "status": "bloomed", "businessLine": "carroll-media"},
     {"item": "Weekly article publishing system", "rooted": "Ongoing", "bloomed": "Live — weekly cadence", "status": "bloomed", "businessLine": "carroll-media"},
-    {"item": "Content repurposing SOP", "rooted": "Drafted", "bloomed": "", "status": "rooted", "businessLine": "carroll-media"},
-    {"item": "Set up ElevenLabs custom voice clone", "rooted": "API key configured", "bloomed": "", "status": "seeded", "businessLine": "carroll-media"},
-    {"item": "AmiLynne Speaks speaker kit / one-sheet", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "speaks"},
-    {"item": "AmiLynne Speaks booking page", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "speaks"},
+    {"item": "AmiLynne Speaks speaker kit / one-sheet", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "speaks", "priority": 1, "why": "Essential credential for speaking inquiries"},
+    {"item": "AmiLynne Speaks booking page", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "speaks", "priority": 2, "why": "Capture speaking leads — /speaking landing page"},
+    {"item": "Keynote topics outline", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "speaks", "priority": 3, "why": "Document 3 signature talks for speaker kit"},
     {"item": "Speaker reel / video intro", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "speaks"},
-    {"item": "Keynote topics outline", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "speaks"},
     {"item": "Testimonials and case studies", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "speaks"},
-    {"item": "Becoming Uncaged book compilation", "rooted": "Content ready", "bloomed": "", "status": "seeded", "businessLine": "writes"},
-    {"item": "Conversations of Consequence book compilation", "rooted": "Content ready", "bloomed": "", "status": "seeded", "businessLine": "writes"},
-    {"item": "LifeCharter book", "rooted": "Framework documented", "bloomed": "", "status": "seeded", "businessLine": "writes"},
-    {"item": "Prayerful Living landing page", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "embraced"},
-    {"item": "Prayerful Living book", "rooted": "Concept stage", "bloomed": "", "status": "seeded", "businessLine": "embraced"},
-    {"item": "WizLead unraveling", "rooted": "High priority identified", "bloomed": "", "status": "seeded", "businessLine": "babs-beau"},
-    {"item": "Team delegation system (Aira workflows)", "rooted": "Partial", "bloomed": "", "status": "becoming", "businessLine": "babs-beau"},
-    {"item": "Sales process documentation", "rooted": "In development", "bloomed": "", "status": "becoming", "businessLine": "babs-beau"},
+    {"item": "Becoming Uncaged book compilation", "rooted": "Content ready", "bloomed": "", "status": "seeded", "businessLine": "writes", "priority": 1, "why": "Mission-critical for incarceration/reentry work"},
+    {"item": "Conversations of Consequence book compilation", "rooted": "Content ready", "bloomed": "", "status": "seeded", "businessLine": "writes", "priority": 2, "why": "150+ episodes ready to curate — authority builder"},
+    {"item": "LifeCharter book", "rooted": "Framework documented", "bloomed": "", "status": "seeded", "businessLine": "writes", "priority": 3, "why": "Core methodology documentation — long-term asset"},
+    {"item": "Prayerful Living landing page", "rooted": "", "bloomed": "", "status": "seeded", "businessLine": "embraced", "priority": 1, "why": "Establish Embraced Fully brand presence"},
+    {"item": "Prayerful Living book", "rooted": "Concept stage", "bloomed": "", "status": "seeded", "businessLine": "embraced", "priority": 2, "why": "Spiritual practice content — future revenue stream"},
+    {"item": "WizLead unraveling", "rooted": "High priority identified", "bloomed": "", "status": "seeded", "businessLine": "babs-beau", "priority": 1, "why": "Critical business blocker — needs immediate attention"},
+    {"item": "Sales process documentation", "rooted": "In development", "bloomed": "", "status": "becoming", "businessLine": "babs-beau", "priority": 2, "why": "Sacred sales pathway — from lead to client"},
+    {"item": "Team delegation system (Aira workflows)", "rooted": "Partial", "bloomed": "", "status": "becoming", "businessLine": "babs-beau", "priority": 3, "why": "Scale through clear SOPs and VA support"},
     {"item": "Prayerful Living landing page", "rooted": "", "bloomed": "", "status": "seeded"},
     {"item": "Google Drive skill activation", "rooted": "Awaiting OAuth token", "bloomed": "", "status": "seeded"},
     {"item": "Becoming Uncaged book compilation", "rooted": "Content ready", "bloomed": "", "status": "seeded"},
@@ -634,6 +650,25 @@ function renderActions(){
   const a=DASHBOARD_DATA.actions;
   const filtered=currentBizFilter==='all'?a:a.filter(x=>x.businessLine===currentBizFilter);
   const seeded=filtered.length, bloomed=filtered.filter(x=>x.status==="bloomed").length, rooted=filtered.filter(x=>x.status==="rooted"||x.status==="becoming"||x.status==="seeded").length;
+  
+  // Show/hide top priorities section
+  const prioritiesSection=document.getElementById("top-priorities");
+  const priorityList=document.getElementById("priority-list");
+  
+  if(currentBizFilter!=='all'){
+    const priorities=filtered.filter(x=>x.priority&&x.priority<=3).sort((a,b)=>a.priority-b.priority);
+    if(priorities.length>0){
+      priorityList.innerHTML=priorities.map(p=>
+        `<div class="priority-item"><span class="priority-num">${p.priority}</span><div class="priority-text">${esc(p.item)}<small>${esc(p.why||'')}</small></div></div>`
+      ).join("");
+      prioritiesSection.style.display="block";
+    }else{
+      prioritiesSection.style.display="none";
+    }
+  }else{
+    prioritiesSection.style.display="none";
+  }
+  
   document.getElementById("countline").innerHTML=
     `<div class="c"><div class="lab">Seeded</div><div class="v">${seeded}</div></div>`+
     `<div class="c"><div class="lab">Bloomed</div><div class="v">${bloomed}</div></div>`+
@@ -641,7 +676,9 @@ function renderActions(){
   document.getElementById("actions-body").innerHTML=filtered.map(x=>{
     const p=APILL[x.status]||APILL.pending;
     const bloomedDisplay=x.bloomed?`<b>${esc(x.bloomed)}</b>`:`<span class="no">Becoming...</span>`;
-    return `<tr><td>${esc(x.item)}</td><td class="made">${esc(x.rooted)}</td><td class="ship">${bloomedDisplay}</td><td><span class="pill ${p[0]}">${p[1]}</span></td></tr>`;
+    const priorityBadge=x.priority?`<span class="priority-badge">#${x.priority}</span>`:'';
+    const rowClass=x.priority?'priority-row':'';
+    return `<tr class="${rowClass}"><td>${esc(x.item)}${priorityBadge}</td><td class="made">${esc(x.rooted)}</td><td class="ship">${bloomedDisplay}</td><td><span class="pill ${p[0]}">${p[1]}</span></td></tr>`;
   }).join("")||`<tr><td colspan="4" style="text-align:center;color:var(--pending);padding:18px">No actions for this business line</td></tr>`;
 }
 
