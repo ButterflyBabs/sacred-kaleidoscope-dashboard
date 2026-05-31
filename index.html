@@ -155,6 +155,14 @@
   .priority-row{background:rgba(212,175,99,.1)}
   .priority-row td:first-child{padding-left:12px}
   .priority-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;background:var(--gold);color:var(--indigo);padding:2px 8px;border-radius:10px;margin-left:8px;text-transform:uppercase;letter-spacing:.05em}
+  .stage-link{transition:all .2s;position:relative}
+  .stage-link:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(31,49,91,.15)}
+  .stage-link.active{background:var(--indigo);color:var(--ivory)}
+  .stage-link.active .lab{color:var(--gold-soft)}
+  .stage-link.active.rooted{background:var(--gold);color:var(--indigo)}
+  .stage-link.active.rooted .lab{color:var(--indigo)}
+  .stage-filter-indicator{display:flex;align-items:center;gap:10px;margin:12px 0;padding:10px 16px;background:var(--indigo);color:var(--ivory);border-radius:8px;font-size:13px}
+  .stage-filter-indicator button{background:var(--gold);color:var(--indigo);border:none;padding:4px 12px;border-radius:4px;font-weight:600;cursor:pointer}
 </style>
 </head>
 <body>
@@ -195,6 +203,10 @@
     <div id="top-priorities" class="top-priorities" style="display:none;">
       <h4>🔥 Top 3 Priorities</h4>
       <div id="priority-list"></div>
+    </div>
+    <div id="stage-filter-indicator" class="stage-filter-indicator" style="display:none;">
+      <span>Showing: <b id="stage-name"></b> actions</span>
+      <button onclick="clearStageFilter()">Show all stages</button>
     </div>
     <div class="countline" id="countline"></div>
     <table class="actions"><thead><tr><th style="width:40%">Intention</th><th>Rooted (When)</th><th>Bloomed (Where)</th><th>Stage</th></tr></thead><tbody id="actions-body"></tbody></table>
@@ -645,11 +657,22 @@ function renderOutcomes(){
   ).join("")||`<tr><td colspan="4" style="text-align:center;color:var(--pending);padding:18px">No outcomes returned</td></tr>`;
 }
 let currentBizFilter='all';
+let currentStageFilter='all';
 
 function renderActions(){
   const a=DASHBOARD_DATA.actions;
-  const filtered=currentBizFilter==='all'?a:a.filter(x=>x.businessLine===currentBizFilter);
-  const seeded=filtered.length, bloomed=filtered.filter(x=>x.status==="bloomed").length, rooted=filtered.filter(x=>x.status==="rooted"||x.status==="becoming"||x.status==="seeded").length;
+  let filtered=currentBizFilter==='all'?a:a.filter(x=>x.businessLine===currentBizFilter);
+  if(currentStageFilter!=='all'){
+    filtered=filtered.filter(x=>{
+      if(currentStageFilter==='seeded')return x.status==='seeded';
+      if(currentStageFilter==='rooted')return x.status==='rooted'||x.status==='becoming';
+      if(currentStageFilter==='bloomed')return x.status==='bloomed';
+      return true;
+    });
+  }
+  const totalSeeded=currentBizFilter==='all'?a.length:(currentBizFilter==='all'?a:a.filter(x=>x.businessLine===currentBizFilter)).length;
+  const totalBloomed=(currentBizFilter==='all'?a:a.filter(x=>x.businessLine===currentBizFilter)).filter(x=>x.status==="bloomed").length;
+  const totalRooted=(currentBizFilter==='all'?a:a.filter(x=>x.businessLine===currentBizFilter)).filter(x=>x.status==="rooted"||x.status==="becoming"||x.status==="seeded").length;
   
   // Show/hide top priorities section
   const prioritiesSection=document.getElementById("top-priorities");
@@ -669,10 +692,14 @@ function renderActions(){
     prioritiesSection.style.display="none";
   }
   
+  const seededActive=currentStageFilter==='seeded'?'active':'';
+  const rootedActive=currentStageFilter==='rooted'?'active':'';
+  const bloomedActive=currentStageFilter==='bloomed'?'active':'';
+  
   document.getElementById("countline").innerHTML=
-    `<div class="c"><div class="lab">Seeded</div><div class="v">${seeded}</div></div>`+
-    `<div class="c"><div class="lab">Bloomed</div><div class="v">${bloomed}</div></div>`+
-    `<div class="c rooted"><div class="lab">Rooted</div><div class="v">${rooted}</div></div>`;
+    `<div class="c stage-link ${seededActive}" onclick="setStageFilter('seeded')" style="cursor:pointer"><div class="lab">Seeded</div><div class="v">${totalSeeded}</div></div>`+
+    `<div class="c stage-link ${bloomedActive}" onclick="setStageFilter('bloomed')" style="cursor:pointer"><div class="lab">Bloomed</div><div class="v">${totalBloomed}</div></div>`+
+    `<div class="c rooted stage-link ${rootedActive}" onclick="setStageFilter('rooted')" style="cursor:pointer"><div class="lab">Rooted</div><div class="v">${totalRooted}</div></div>`;
   document.getElementById("actions-body").innerHTML=filtered.map(x=>{
     const p=APILL[x.status]||APILL.pending;
     const bloomedDisplay=x.bloomed?`<b>${esc(x.bloomed)}</b>`:`<span class="no">Becoming...</span>`;
@@ -700,11 +727,32 @@ function updateBizCounts(){
   });
 }
 
+function setStageFilter(stage){
+  currentStageFilter=currentStageFilter===stage?'all':stage;
+  const indicator=document.getElementById("stage-filter-indicator");
+  const stageName=document.getElementById("stage-name");
+  if(currentStageFilter!=='all'){
+    indicator.style.display="flex";
+    stageName.textContent=stage.charAt(0).toUpperCase()+stage.slice(1);
+  }else{
+    indicator.style.display="none";
+  }
+  renderActions();
+}
+
+function clearStageFilter(){
+  currentStageFilter='all';
+  document.getElementById("stage-filter-indicator").style.display="none";
+  renderActions();
+}
+
 document.querySelectorAll(".biz-tab").forEach(t=>{
   t.addEventListener("click",()=>{
     document.querySelectorAll(".biz-tab").forEach(x=>x.classList.remove("active"));
     t.classList.add("active");
     currentBizFilter=t.dataset.biz;
+    currentStageFilter='all';
+    document.getElementById("stage-filter-indicator").style.display="none";
     renderActions();
   });
 });
