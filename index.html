@@ -101,7 +101,7 @@
   .countline .c{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 20px;min-width:130px}
   .countline .c .lab{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:6px}
   .countline .c .v{font-family:var(--display);font-weight:600;font-size:30px;color:var(--indigo);line-height:1}
-  .countline .c.leak .v{color:var(--gold)}
+  .countline .c.rooted .v{color:var(--gold)}
   ol.gap{list-style:none;counter-reset:g}
   ol.gap li{counter-increment:g;position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px 16px 58px;margin-bottom:12px}
   ol.gap li::before{content:counter(g);position:absolute;left:16px;top:16px;width:28px;height:28px;border-radius:50%;background:var(--indigo);color:var(--ivory);font-family:var(--display);font-weight:600;display:flex;align-items:center;justify-content:center;font-size:14px}
@@ -135,7 +135,7 @@
   </section>
   <section class="panel" id="actions">
     <div class="sec-head"><h2>Actions Taken</h2><span class="meta">Made vs Shipped</span></div>
-    <div class="teeth"><b>The teeth:</b> shipped means it left the building. A finished thing in drafts is made, not shipped. The headline is "<b>made X, shipped Y</b>."</div>
+    <div class="teeth"><b>The sacred cycle:</b> <b>Seeded</b> = intentions planted. <b>Rooted</b> = growing but not yet visible. <b>Bloomed</b> = fully manifested and alive. The headline is "<b>seeded X, bloomed Y</b>."</div>
     <div class="countline" id="countline"></div>
     <table class="actions"><thead><tr><th style="width:40%">Item</th><th>Made</th><th>Shipped</th><th>Status</th></tr></thead><tbody id="actions-body"></tbody></table>
   </section>
@@ -297,7 +297,7 @@ const DASHBOARD_DATA = {
 
 /* ---------- render (do not edit) ---------- */
 const PILL={live:["p-live","Live"],built:["p-built","Built"],inprogress:["p-prog","In progress"],pending:["p-pend","Pending"],internal:["p-int","Internal"]};
-const APILL={shipped:["p-live","Shipped"],made:["p-built","Made only"],inprogress:["p-prog","In progress"],internal:["p-int","Internal live"]};
+const APILL={shipped:["p-live","Bloomed"],made:["p-built","Rooted"],inprogress:["p-prog","Becoming"],internal:["p-int","Internal live"],pending:["p-pend","Seeded"],live:["p-live","Bloomed"]};
 const esc=s=>(s==null?"":String(s)).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
 
 function renderMeta(){
@@ -316,11 +316,11 @@ function renderOutcomes(){
 }
 function renderActions(){
   const a=DASHBOARD_DATA.actions;
-  const made=a.length, shipped=a.filter(x=>x.status==="shipped").length, leak=a.filter(x=>x.status==="made").length;
+  const seeded=a.length, bloomed=a.filter(x=>x.status==="shipped"||x.status==="live").length, rooted=a.filter(x=>x.status==="made"||x.status==="pending").length;
   document.getElementById("countline").innerHTML=
-    `<div class="c"><div class="lab">Logged</div><div class="v">${made}</div></div>`+
-    `<div class="c"><div class="lab">Shipped</div><div class="v">${shipped}</div></div>`+
-    `<div class="c leak"><div class="lab">Made, not shipped</div><div class="v">${leak}</div></div>`;
+    `<div class="c"><div class="lab">Seeded</div><div class="v">${seeded}</div></div>`+
+    `<div class="c"><div class="lab">Bloomed</div><div class="v">${bloomed}</div></div>`+
+    `<div class="c rooted"><div class="lab">Rooted</div><div class="v">${rooted}</div></div>`;
   document.getElementById("actions-body").innerHTML=a.map(x=>{
     const p=APILL[x.status]||APILL.made;
     const ship=x.shipped?`<b>${esc(x.shipped)}</b>`:`<span class="no">Not shipped</span>`;
