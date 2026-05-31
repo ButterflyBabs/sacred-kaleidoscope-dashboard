@@ -642,6 +642,12 @@ const PILL={live:["p-live","Live"],built:["p-built","Built"],inprogress:["p-prog
 const APILL={shipped:["p-live","Bloomed"],made:["p-built","Rooted"],inprogress:["p-prog","Becoming"],internal:["p-int","Internal live"],pending:["p-pend","Seeded"],live:["p-live","Bloomed"]};
 const esc=s=>(s==null?"":String(s)).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
 
+function linkify(text){
+  if(!text)return text;
+  const urlRegex=/(https?:\/\/[^\s<]+[^\s<.,;:!?])/g;
+  return text.replace(urlRegex,url=>`<a href="${url}" target="_blank" style="color:var(--gold);text-decoration:underline;">${url}</a>`);
+}
+
 function renderMeta(){
   const m=DASHBOARD_DATA.meta;
   document.getElementById("statusbar").innerHTML=
@@ -653,7 +659,7 @@ function renderMeta(){
 }
 function renderOutcomes(){
   document.getElementById("outcomes-body").innerHTML=DASHBOARD_DATA.outcomes.map(o=>
-    `<tr><td><b>${esc(o.outcome)}</b></td><td>${esc(o.evidence)}</td><td>${o.metric_moved?esc(o.metric_moved):'<span style="color:var(--pending)">—</span>'}</td><td>${esc(o.quarter)}</td></tr>`
+    `<tr><td><b>${esc(o.outcome)}</b></td><td>${linkify(esc(o.evidence))}</td><td>${o.metric_moved?linkify(esc(o.metric_moved)):'<span style="color:var(--pending)">—</span>'}</td><td>${esc(o.quarter)}</td></tr>`
   ).join("")||`<tr><td colspan="4" style="text-align:center;color:var(--pending);padding:18px">No outcomes returned</td></tr>`;
 }
 let currentBizFilter='all';
@@ -702,7 +708,7 @@ function renderActions(){
     `<div class="c rooted stage-link ${rootedActive}" onclick="setStageFilter('rooted')" style="cursor:pointer"><div class="lab">Rooted</div><div class="v">${totalRooted}</div></div>`;
   document.getElementById("actions-body").innerHTML=filtered.map(x=>{
     const p=APILL[x.status]||APILL.pending;
-    const bloomedDisplay=x.bloomed?`<b>${esc(x.bloomed)}</b>`:`<span class="no">Becoming...</span>`;
+    const bloomedDisplay=x.bloomed?linkify(esc(x.bloomed)):`<span class="no">Becoming...</span>`;
     const priorityBadge=x.priority?`<span class="priority-badge">#${x.priority}</span>`:'';
     const rowClass=x.priority?'priority-row':'';
     return `<tr class="${rowClass}"><td>${esc(x.item)}${priorityBadge}</td><td class="made">${esc(x.rooted)}</td><td class="ship">${bloomedDisplay}</td><td><span class="pill ${p[0]}">${p[1]}</span></td></tr>`;
@@ -809,13 +815,13 @@ function renderProjects(){
   document.getElementById("projects-body").innerHTML=DASHBOARD_DATA.projects.map(g=>
     `<div class="group"><h3>${esc(g.group)}</h3><table class="assets">`+
     g.items.map(it=>{const p=PILL[it.status]||PILL.pending;
-      return `<tr><td class="name">${esc(it.name)}<small>${esc(it.sub)}</small></td><td><span class="pill ${p[0]}">${p[1]}</span></td><td class="note">${esc(it.note)}</td></tr>`;
+      return `<tr><td class="name">${linkify(esc(it.name))}<small>${linkify(esc(it.sub))}</small></td><td><span class="pill ${p[0]}">${p[1]}</span></td><td class="note">${linkify(esc(it.note))}</td></tr>`;
     }).join("")+`</table></div>`
   ).join("");
 }
 function renderGap(){
   document.getElementById("gap-body").innerHTML=DASHBOARD_DATA.gap.map(g=>
-    `<li><h4>${esc(g.item)}</h4><p>${esc(g.detail)}</p>${g.revenue?'<span class="rev">↳ revenue-connected</span>':''}</li>`
+    `<li><h4>${esc(g.item)}</h4><p>${linkify(esc(g.detail))}</p>${g.revenue?'<span class="rev">↳ revenue-connected</span>':''}</li>`
   ).join("");
 }
 renderMeta();renderOutcomes();updateBizCounts();renderActions();renderMetrics();renderProjects();renderGap();
